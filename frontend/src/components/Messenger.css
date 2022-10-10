@@ -1,0 +1,26 @@
+.inline-div {
+    display: inline-block;
+    margin: 0 auto;
+    vertical-align: top;
+    line-break: auto;
+    height: 100%;
+}
+
+#conversation-tabs-container{
+    width:20%
+}
+
+#conversation-tab{
+    background: darkgray;
+    margin: 10px;
+    padding: 10px;
+}
+
+#conversation-messages-container{
+    width:60%
+}
+#messenger-container{
+    margin: 0 auto;
+    width: 80%;
+    text-align: center;
+}
