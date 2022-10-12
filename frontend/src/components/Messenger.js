@@ -1,15 +1,18 @@
 import {useEffect, useState} from "react";
 import Conversation from "./Conversation";
 import './Messenger.css';
+import axios from "axios";
+
+const API_URL= "http://localhost:8080/api/v1/conversations";
 
 export default function Messenger(){
     const [conversations, setConversations] = useState([])
 
     useEffect(() => {
-        fetch(`https://jsonplaceholder.typicode.com/posts`)
+        axios(API_URL)
             .then((response) => {
                 console.log(response);
-                response.json().then((json) => setConversations(json))
+                setConversations(response.data);
             });
     }, []);
 

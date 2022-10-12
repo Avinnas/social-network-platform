@@ -1,7 +1,7 @@
-package ab.socialnetwork.authentication;
+package ab.instantmessenger.security;
 
-import ab.socialnetwork.model.User;
-import ab.socialnetwork.repository.UserRepository;
+import ab.instantmessenger.model.User;
+import ab.instantmessenger.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
