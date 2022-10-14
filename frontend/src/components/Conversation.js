@@ -3,55 +3,30 @@ import './Conversation.css'
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import SendIcon from '@mui/icons-material/Send';
+import NewMessageForm from "./NewMessageForm";
+import axios from "axios";
 
 
 export default function Conversation(props){
 
+    const API_URL_GET_MESSAGES = process.env.REACT_APP_API_URL + "/conversations/" + props.id + "/messages"
+
     const [messages,setMessages] = useState([]);
-    const [newMessageContent, setNewMessageContent] = useState("")
-
-    let handleSubmit = async (e) => {
-        e.preventDefault();
-
-        let res = await fetch("https://httpbin.org/post", {
-            method: "POST",
-            body: JSON.stringify({
-                content: newMessageContent
-            })
-        });
-
-        let resJson = await res.json();
-        setNewMessageContent("");
-        if(res.status!==200){
-            alert("Error occurred");
-        }
-    }
 
     useEffect(() => {
-        fetch(`https://jsonplaceholder.typicode.com/posts/` + props.id + `/comments`)
+        axios.get(API_URL_GET_MESSAGES)
             .then((response) => {
                 console.log(response);
-                response.json().then((json) => setMessages(json))
+                setMessages(response.data)
             });
-    }, [props.id]);
+    }, []);
 
 
     return(
         <>
-            {messages.map((message,index) => <div className={`message ${index % 2 ? 'left' : 'right'}`}> {message.body} </div>)}
-            <div>
-            <form className={'right'} onSubmit={handleSubmit}>
-                <TextField
-                    id="filled-basic"
-                    value={newMessageContent}
-                    placeholder="message"
-                    onChange={(e) => setNewMessageContent(e.target.value)}
-                />
-                <Button type= "submit" variant="contained" endIcon={<SendIcon />}>
+            {messages.map((message,index) => <div className={`message ${index % 2 ? 'left' : 'right'}`}> {message.content} </div>)}
 
-                </Button>
-            </form>
-            </div>
+            <NewMessageForm conversationId={props.id}/>
         </>
     )
 

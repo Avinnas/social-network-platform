@@ -2,21 +2,23 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css"
+import { useNavigate } from "react-router-dom"
 import AuthService from "../services/auth.service"
 
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
+
     function validateForm() {
         return username.length > 0 && password.length > 0;
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        AuthService
-            .login(username, password)
-            .then(response => console.log(response));
+        await AuthService.login(username, password);
+        navigate("/");
 
     }
 

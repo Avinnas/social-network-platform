@@ -3,13 +3,13 @@ import Conversation from "./Conversation";
 import './Messenger.css';
 import axios from "axios";
 
-const API_URL= "http://localhost:8080/api/v1/conversations";
-
 export default function Messenger(){
+    const API_URL_GET_CONVERSATIONS= process.env.REACT_APP_API_URL + "/conversations";
+
     const [conversations, setConversations] = useState([])
 
     useEffect(() => {
-        axios(API_URL)
+        axios(API_URL_GET_CONVERSATIONS)
             .then((response) => {
                 console.log(response);
                 setConversations(response.data);

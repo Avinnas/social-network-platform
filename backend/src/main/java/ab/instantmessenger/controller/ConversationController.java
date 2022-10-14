@@ -32,4 +32,9 @@ public class ConversationController {
 
         return ResponseEntity.ok(conversationService.addMessage(userDetails, message, id));
     }
+
+    @GetMapping("/{id}/messages")
+    public ResponseEntity<?> getMessages(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id){
+        return ResponseEntity.ok(conversationService.getMessages(userDetails, id));
+    }
 }

@@ -28,12 +28,16 @@ public class ConversationService {
         return conversationRepository.findConversationsByUsers_Username(userDetails.getUsername());
     }
 
-    public Message addMessage(UserDetails userDetails, Message message, long conversation_id){
+    public Message addMessage(UserDetails userDetails, Message message, long conversationId){
 
         User u = userRepository.findByUsername(userDetails.getUsername());
-        Conversation conversation = conversationRepository.getReferenceById(conversation_id);
+        Conversation conversation = conversationRepository.getReferenceById(conversationId);
         message.setUser(u);
         message.setConversation(conversation);
         return messageRepository.save(message);
+    }
+
+    public List<Message> getMessages(UserDetails userDetails, long conversationId) {
+        return messageRepository.findAllByConversation_IdFetchUsers(conversationId);
     }
 }
