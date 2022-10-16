@@ -14,10 +14,14 @@ export default function NewMessageForm(props){
     let handleSubmit = async (e) => {
         e.preventDefault();
 
-        let res = await axios.post(API_URL_SEND_MESSAGE, {
-            content: newMessageContent
-        });
-        console.log(res);
+        let message = {
+            "content" : newMessageContent
+        }
+
+        let res = await axios.post(API_URL_SEND_MESSAGE, message);
+        message = res.data
+        props.setMessages([...props.messages, message])
+
         setNewMessageContent("");
         if(res.status!==200){
             alert("Error occurred");

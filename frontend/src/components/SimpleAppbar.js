@@ -3,12 +3,17 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutMenuButton from "./LogoutMenuButton";
 import {Link} from "react-router-dom";
+import LoginMenuButton from "./LoginMenuButton";
+import "./SimpleAppbar.css"
+import {useAuth} from "../services/AuthProvider";
 
 export default function SimpleAppbar() {
+    const [IsLoggedIn, setIsLoggedIn] = useAuth();
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -22,10 +27,14 @@ export default function SimpleAppbar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Link to="/"><Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        News
+                    <Link to="/"> <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Home
                     </Typography></Link>
-                    <Link to="/login"> <Button color="inherit">Login</Button></Link>
+                    <Link to="/messenger"><Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Messenger
+                    </Typography></Link>
+                    <LoginMenuButton/>
+                    <LogoutMenuButton/>
                 </Toolbar>
             </AppBar>
         </Box>

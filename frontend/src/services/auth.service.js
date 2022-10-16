@@ -1,52 +1,46 @@
 import axios from 'axios';
+import {useAuth} from './AuthProvider'
 
 const API_URL = "http://localhost:8080/api/v1/auth/";
 
-const setAuthorizationHeader = (token) =>{
-    axios.defaults.headers.common["Authorization"] = 'Bearer ' + token;
 
-}
-
-const deleteAuthorizationHeader = () =>{
-    delete axios.defaults.headers.common["Authorization"];
-}
-
-
-const register = (username, email, password) => {
-    return axios.post(API_URL + 'signup', {
-        username,
-        email,
-        password,
-    })
-}
-const login = (username, password) => {
-    return axios.post( API_URL + 'signin', {
-        username,
-        password
-    })
-        .then((response) => {
-            if(response.data.accessToken){
-                localStorage.setItem("user", JSON.stringify(response.data))
-                setAuthorizationHeader(response.data.accessToken);
-            }
-            return response.data;
+    const register = (username, email, password) => {
+        return axios.post(API_URL + 'signup', {
+            username,
+            email,
+            password,
         })
-}
+    }
+    const login = (username, password) => {
+        const {setUser, setIsLoggedIn} = useAuth()
 
-const logout = () => {
-    localStorage.removeItem("user");
-    deleteAuthorizationHeader();
-}
+        return axios.post( API_URL + 'signin', {
+            username,
+            password
+        })
+            .then((response) => {
+                if(response.data.accessToken){
+                    const userDetails = JSON.stringify(response.data)
+                    localStorage.setItem("user", userDetails)
+                    setUser(userDetails)
+                    setIsLoggedIn(true)
+                }
+                return response.data;
+            })
+    }
 
-const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem("user"))
-}
+    const logout = () => {
+
+        const {setUser, setIsLoggedIn} = useAuth()
+        localStorage.removeItem("user");
+        setUser(null)
+        setIsLoggedIn(false)
+    }
 
 const AuthService = {
     register,
     login,
     logout,
-    getCurrentUser,
 };
 
 export default AuthService;

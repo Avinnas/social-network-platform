@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import SendIcon from '@mui/icons-material/Send';
 import NewMessageForm from "./NewMessageForm";
 import axios from "axios";
+import Message from "./Message";
 
 
 export default function Conversation(props){
@@ -24,10 +25,9 @@ export default function Conversation(props){
 
     return(
         <>
-            {messages.map((message,index) => <div className={`message ${index % 2 ? 'left' : 'right'}`}> {message.content} </div>)}
+            {messages.map(message => <Message {...message}/>)}
 
-            <NewMessageForm conversationId={props.id}/>
-        </>
+            <NewMessageForm conversationId={props.id} messages={messages} setMessages={setMessages}/>
+                </>
     )
-
 }
