@@ -21,20 +21,19 @@ public class ConversationController {
     ConversationService conversationService;
 
     @GetMapping
-    public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(conversationService.getAllUserConversations(userDetails));
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/messages")
     public ResponseEntity<?> addMessage(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody Message message, @PathVariable long id){
+            @RequestBody Message message, @PathVariable long id) {
 
-        return ResponseEntity.ok(conversationService.addMessage(userDetails, message, id));
+        return ResponseEntity.ok(conversationService.addMessage(message, id));
     }
 
     @GetMapping("/{id}/messages")
-    public ResponseEntity<?> getMessages(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id){
+    public ResponseEntity<?> getMessages(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {
         return ResponseEntity.ok(conversationService.getMessages(userDetails, id));
     }
 }

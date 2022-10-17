@@ -5,9 +5,9 @@ import {useState} from "react";
 import axios from "axios";
 
 
-export default function NewMessageForm(props){
+export default function NewMessageForm(props) {
 
-    const API_URL_SEND_MESSAGE = process.env.REACT_APP_API_URL + "/conversations/" + props.conversationId;
+    const API_URL_SEND_MESSAGE = "/app/conversations/" + props.conversationId + "/messages";
 
     const [newMessageContent, setNewMessageContent] = useState("")
 
@@ -15,17 +15,12 @@ export default function NewMessageForm(props){
         e.preventDefault();
 
         let message = {
-            "content" : newMessageContent
+            "content": newMessageContent
         }
-
-        let res = await axios.post(API_URL_SEND_MESSAGE, message);
-        message = res.data
+        props.clientRef.sendMessage(API_URL_SEND_MESSAGE, message)
         props.setMessages([...props.messages, message])
 
         setNewMessageContent("");
-        if(res.status!==200){
-            alert("Error occurred");
-        }
     }
 
     return (
@@ -37,7 +32,7 @@ export default function NewMessageForm(props){
                     placeholder="message"
                     onChange={(e) => setNewMessageContent(e.target.value)}
                 />
-                <Button type= "submit" variant="contained" endIcon={<SendIcon />}>
+                <Button type="submit" variant="contained" endIcon={<SendIcon/>}>
 
                 </Button>
             </form>

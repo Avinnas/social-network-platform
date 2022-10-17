@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import RequireAuth from "./components/RequireAuth"
 
-import './utils/jwtInterceptor'
+import './utils/JwtInterceptor'
 
 import {
     BrowserRouter as Router,

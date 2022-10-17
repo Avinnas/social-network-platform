@@ -12,7 +12,7 @@ import "./SimpleAppbar.css"
 import {useAuth} from "../services/AuthProvider";
 
 export default function SimpleAppbar() {
-    const [IsLoggedIn, setIsLoggedIn] = useAuth();
+    const {isLoggedIn} = useAuth();
 
     return (
         <Box sx={{ flexGrow: 1 }}>

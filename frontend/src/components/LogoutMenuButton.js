@@ -1,16 +1,21 @@
 import Button from "@mui/material/Button";
-import AuthService from "../services/auth.service";
 import './LogoutMenuButton.css'
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../services/AuthProvider";
 
 export default function LogoutMenuButton(){
     const navigate = useNavigate()
-    const {isLoggedIn} = useAuth();
+    const {isLoggedIn, setIsLoggedIn} = useAuth()
 
     let logoutAndRedirect = () => {
-        AuthService.logout();
+        logout();
         navigate("/")
     }
+
+    const logout = () => {
+        localStorage.removeItem("user");
+        setIsLoggedIn(false)
+    }
+
     return( isLoggedIn && <Button id={'logout-menu-button'} onClick={logoutAndRedirect}> Logout </Button>)
 }

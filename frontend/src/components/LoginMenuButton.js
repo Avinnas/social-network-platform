@@ -7,7 +7,7 @@ import {useAuth} from "../services/AuthProvider";
 
 export default function LoginMenuButton(){
     const {isLoggedIn} = useAuth();
-    if(isLoggedIn){
+    if(!isLoggedIn){
         return (
 
             <Link to="/login"> <Button color="inherit">Login</Button></Link>

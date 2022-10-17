@@ -6,6 +6,8 @@ import ab.instantmessenger.model.User;
 import ab.instantmessenger.repository.ConversationRepository;
 import ab.instantmessenger.repository.MessageRepository;
 import ab.instantmessenger.repository.UserRepository;
+import ab.instantmessenger.security.UserDetailsImpl;
+import ab.instantmessenger.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,13 @@ public class ConversationService {
         return conversationRepository.findConversationsByUsers_Username(userDetails.getUsername());
     }
 
-    public Message addMessage(UserDetails userDetails, Message message, long conversationId){
+    public Message addMessage(Message message, long conversationId){
 
-        User u = userRepository.findByUsername(userDetails.getUsername());
-        Conversation conversation = conversationRepository.getReferenceById(conversationId);
-        message.setUser(u);
-        message.setConversation(conversation);
+        UserDetailsImpl userDetails = (UserDetailsImpl) AuthUtils.getCurrentUserDetails();
+
+        message.setConversation(conversationRepository.getReferenceById(conversationId));
+        message.setUser(userRepository.getReferenceById(userDetails.getUserId()));
+
         return messageRepository.save(message);
     }
 
