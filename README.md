@@ -1,1 +1,1 @@
-# instant-messenger
+# social-network-platform
