@@ -12,7 +12,10 @@ export default function Conversation(props){
     const API_URL_GET_MESSAGES = process.env.REACT_APP_API_URL + "/conversations/" + props.id + "/messages"
 
     const [messages,setMessages] = useState([]);
-    let clientRef = null;
+    const [clientRef, setClientRef] = useState(null)
+    const header = {
+        "Authorization": "Bearer " + getCurrentUser().accessToken
+    }
 
     useEffect(() => {
         axios.get(API_URL_GET_MESSAGES)
@@ -25,8 +28,8 @@ export default function Conversation(props){
     return(
 
         <>
-            <SockJsClient url={'http://' + getCurrentUser().accessToken +'@localhost:8080/websocket'}
-                          topics={['conversations/'+ props.id + '/messages']}
+            <SockJsClient url={'http://localhost:8080/websocket'}
+                          topics={['/topic/conversations/'+ props.id + '/messages']}
                           onConnect={() => {
                               console.log("connected");
                           }}
@@ -34,10 +37,11 @@ export default function Conversation(props){
                               console.log("Disconnected");
                           }}
                           onMessage={(msg) => {
-                              console.log(msg);
+                              setMessages([...messages, msg])
                           }}
+                          headers = {header}
                           ref={(client) => {
-                              clientRef = client
+                              setClientRef(client)
                           }}/>
             {messages.map((message, index) => <Message key={"message"+index}{...message}/>)}
 

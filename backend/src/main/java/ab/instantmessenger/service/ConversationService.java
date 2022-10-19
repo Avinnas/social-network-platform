@@ -1,8 +1,9 @@
 package ab.instantmessenger.service;
 
+import ab.instantmessenger.dto.MessageDtoMapper;
+import ab.instantmessenger.dto.MessageWriteDto;
 import ab.instantmessenger.model.Conversation;
 import ab.instantmessenger.model.Message;
-import ab.instantmessenger.model.User;
 import ab.instantmessenger.repository.ConversationRepository;
 import ab.instantmessenger.repository.MessageRepository;
 import ab.instantmessenger.repository.UserRepository;
@@ -26,11 +27,16 @@ public class ConversationService {
     @Autowired
     MessageRepository messageRepository;
 
+    @Autowired
+    MessageDtoMapper messageDtoMapper;
+
     public List<Conversation> getAllUserConversations(UserDetails userDetails){
         return conversationRepository.findConversationsByUsers_Username(userDetails.getUsername());
     }
 
-    public Message addMessage(Message message, long conversationId){
+    public Message addMessage(MessageWriteDto messageDto, long conversationId){
+
+        Message message = messageDtoMapper.toMessage(messageDto);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) AuthUtils.getCurrentUserDetails();
 
@@ -40,7 +46,7 @@ public class ConversationService {
         return messageRepository.save(message);
     }
 
-    public List<Message> getMessages(UserDetails userDetails, long conversationId) {
+    public List<Message> getMessages(long conversationId) {
         return messageRepository.findAllByConversation_IdFetchUsers(conversationId);
     }
 }

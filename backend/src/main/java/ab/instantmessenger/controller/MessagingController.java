@@ -1,12 +1,12 @@
 package ab.instantmessenger.controller;
 
+import ab.instantmessenger.dto.MessageWriteDto;
 import ab.instantmessenger.model.Message;
 import ab.instantmessenger.service.ConversationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class MessagingController {
 
     @Autowired
-    ConversationService conversationService;
+    private ConversationService conversationService;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/conversations/{conversationId}/messages")
-    @SendTo("/topic/conversations/{conversationId}/messages")
-    public Message sendMessage(@Payload Message message, @DestinationVariable long conversationId) {
-        conversationService.addMessage(message, conversationId);
-        return message;
+    public void sendMessage(MessageWriteDto messageDto, @DestinationVariable long conversationId) {
+        String destination = "/topic/conversations/"+ conversationId+"/messages";
+        Message message = conversationService.addMessage(messageDto, conversationId);
+        simpMessagingTemplate.convertAndSend(destination, message);
     }
 
 }

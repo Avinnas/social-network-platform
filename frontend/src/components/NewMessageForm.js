@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import {useState} from "react";
 import axios from "axios";
+import getCurrentUser from "../utils/currentUser";
 
 
 export default function NewMessageForm(props) {
@@ -15,10 +16,15 @@ export default function NewMessageForm(props) {
         e.preventDefault();
 
         let message = {
-            "content": newMessageContent
+            "content": newMessageContent,
         }
-        props.clientRef.sendMessage(API_URL_SEND_MESSAGE, message)
+        props.clientRef.sendMessage(API_URL_SEND_MESSAGE,JSON.stringify(message), {"Authorization": "Bearer " + getCurrentUser().accessToken})
+        message['user']= {
+            "username": getCurrentUser().username
+        };
         props.setMessages([...props.messages, message])
+
+        console.log(message)
 
         setNewMessageContent("");
     }

@@ -20,4 +20,5 @@ public class AuthUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (UserDetails) authentication.getPrincipal();
     }
+
 }
