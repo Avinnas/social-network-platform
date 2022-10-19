@@ -1,8 +1,10 @@
 .message{
     background-color: cornflowerblue;
-    padding: 5px;
+    padding: 10px 15px;
     margin: 10px;
-    width: 60%;
+    max-width: 50%;
+    border-radius: 30px;
+    word-wrap: break-word;
 }
 
 .left{

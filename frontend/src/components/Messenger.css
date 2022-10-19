@@ -10,10 +10,9 @@
     width:20%
 }
 
-#conversation-tab{
-    background: darkgray;
-    margin: 10px;
-    padding: 10px;
+.Button.conversation-tab{
+    width:100%;
+    margin: 5px;
 }
 
 #conversation-messages-container{

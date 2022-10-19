@@ -19,7 +19,7 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    long messageId;
 
     String content;
 

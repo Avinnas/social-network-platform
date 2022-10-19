@@ -17,8 +17,8 @@ public class ConversationController {
     ConversationService conversationService;
 
     @GetMapping
-    public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(conversationService.getAllUserConversations(userDetails));
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok(conversationService.getAllUserConversations());
     }
 
     @PostMapping("/{id}/messages")

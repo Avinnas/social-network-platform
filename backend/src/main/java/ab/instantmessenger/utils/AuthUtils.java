@@ -2,6 +2,7 @@ package ab.instantmessenger.utils;
 
 import ab.instantmessenger.model.User;
 import ab.instantmessenger.repository.UserRepository;
+import ab.instantmessenger.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +14,7 @@ public class AuthUtils {
     static UserRepository userRepository;
 
     public static User getCurrentUser(){
-        return userRepository.findByUsername(getCurrentUserDetails().getUsername());
+        return ((UserDetailsImpl)getCurrentUserDetails()).getUser();
     }
 
     public static UserDetails getCurrentUserDetails(){

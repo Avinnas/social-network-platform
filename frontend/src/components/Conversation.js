@@ -7,11 +7,11 @@ import Message from "./Message";
 import getCurrentUser from "../utils/currentUser";
 
 
-export default function Conversation(props){
+export default function Conversation(props) {
 
     const API_URL_GET_MESSAGES = process.env.REACT_APP_API_URL + "/conversations/" + props.id + "/messages"
 
-    const [messages,setMessages] = useState([]);
+    const [messages, setMessages] = useState([]);
     const [clientRef, setClientRef] = useState(null)
     const header = {
         "Authorization": "Bearer " + getCurrentUser().accessToken
@@ -24,12 +24,27 @@ export default function Conversation(props){
             });
     }, []);
 
+    const onMessageReceived = (messageReceived) => {
+        if (getCurrentUser().username !== messageReceived.user.username) {
+            setMessages([...messages, messageReceived])
+            return;
+        }
+        // Replace existing message
+        const newMessagesArray = messages.map(message => {
+            if (message.messageId === messageReceived.messageId) {
+                return messageReceived;
+            }
+            return message;
+        })
+        setMessages(newMessagesArray);
+    }
 
-    return(
+
+    return (
 
         <>
             <SockJsClient url={'http://localhost:8080/websocket'}
-                          topics={['/topic/conversations/'+ props.id + '/messages']}
+                          topics={['/topic/conversations/' + props.id + '/messages']}
                           onConnect={() => {
                               console.log("connected");
                           }}
@@ -37,15 +52,16 @@ export default function Conversation(props){
                               console.log("Disconnected");
                           }}
                           onMessage={(msg) => {
-                              setMessages([...messages, msg])
+
                           }}
-                          headers = {header}
+                          headers={header}
                           ref={(client) => {
                               setClientRef(client)
                           }}/>
-            {messages.map((message, index) => <Message key={"message"+index}{...message}/>)}
+            {messages.map((message, index) => <Message key={"message" + index}{...message}/>)}
 
-            <NewMessageForm conversationId={props.id} clientRef={clientRef} messages={messages} setMessages={setMessages}/>
-                </>
+            <NewMessageForm conversationId={props.id} clientRef={clientRef} messages={messages}
+                            setMessages={setMessages}/>
+        </>
     )
 }

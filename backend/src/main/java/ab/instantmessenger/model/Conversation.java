@@ -1,5 +1,6 @@
 package ab.instantmessenger.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +19,12 @@ public class Conversation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    long conversationId;
 
     String title;
 
     @OneToMany(mappedBy = "conversation")
+    @JsonBackReference
     List<Message> messages;
 
     @ManyToMany
