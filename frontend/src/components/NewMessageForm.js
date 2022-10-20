@@ -2,7 +2,6 @@ import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import {useState} from "react";
-import axios from "axios";
 import getCurrentUser from "../utils/currentUser";
 
 
@@ -18,6 +17,7 @@ export default function NewMessageForm(props) {
         let message = {
             "content": newMessageContent,
         }
+        console.log(props.clientRef)
         props.clientRef.sendMessage(API_URL_SEND_MESSAGE,JSON.stringify(message), {"Authorization": "Bearer " + getCurrentUser().accessToken})
         message['user']= {
             "username": getCurrentUser().username
@@ -31,15 +31,17 @@ export default function NewMessageForm(props) {
 
     return (
         <div>
-            <form className={'right'} onSubmit={handleSubmit}>
+            <form className={'message-form'} onSubmit={handleSubmit}>
                 <TextField
+                    fullwidth={true}
+                    size="small"
                     id="filled-basic"
                     value={newMessageContent}
                     placeholder="message"
                     onChange={(e) => setNewMessageContent(e.target.value)}
                 />
                 <Button type="submit" variant="contained" endIcon={<SendIcon/>}>
-
+                    Send
                 </Button>
             </form>
         </div>

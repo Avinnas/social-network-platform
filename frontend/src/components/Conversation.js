@@ -1,10 +1,10 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import './Conversation.css'
-import SockJsClient from 'react-stomp';
 import NewMessageForm from "./NewMessageForm";
 import axios from "axios";
 import Message from "./Message";
 import getCurrentUser from "../utils/currentUser";
+import SockJsClient from "react-stomp";
 
 
 export default function Conversation(props) {
@@ -51,14 +51,13 @@ export default function Conversation(props) {
                           onDisconnect={() => {
                               console.log("Disconnected");
                           }}
-                          onMessage={(msg) => {
-
-                          }}
+                          onMessage={(msg) => onMessageReceived(msg)}
                           headers={header}
                           ref={(client) => {
                               setClientRef(client)
                           }}/>
-            {messages.map((message, index) => <Message key={"message" + index}{...message}/>)}
+            <h2>{props.title}</h2>
+                {messages.map((message, index) => <Message key={"message" + index}{...message}/>)}
 
             <NewMessageForm conversationId={props.id} clientRef={clientRef} messages={messages}
                             setMessages={setMessages}/>
