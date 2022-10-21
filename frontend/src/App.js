@@ -12,23 +12,28 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import ResponsiveAppBar from "./components/ResponsiveAppBar";
+import {Container} from "@mui/material";
 
 
 function App() {
   return (
       <Router>
-      <SimpleAppbar/>
-          <Routes>
-              <Route path="/" element={<Home/>}>
-              </Route>
-              <Route path="/messenger" element={
-                  <RequireAuth>
-                      <Messenger/>
-                  </RequireAuth>}>
-              </Route>
-              <Route path="/login" element={<Login/>}>
-              </Route>
-          </Routes>
+      <ResponsiveAppBar/>
+          <Container maxWidth={"xl"}>
+              <Routes>
+                  <Route path="/" element={<Home/>}>
+                  </Route>
+                  <Route path="/messenger" element={
+                      <RequireAuth>
+                          <Messenger/>
+                      </RequireAuth>}>
+                  </Route>
+                  <Route path="/login" element={<Login/>}>
+                  </Route>
+              </Routes>
+
+          </Container>
 
       </Router>
   );

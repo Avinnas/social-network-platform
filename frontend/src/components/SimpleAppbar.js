@@ -9,32 +9,37 @@ import LogoutMenuButton from "./LogoutMenuButton";
 import {Link} from "react-router-dom";
 import LoginMenuButton from "./LoginMenuButton";
 import "./SimpleAppbar.css"
-import {useAuth} from "../services/AuthProvider";
+import {Container} from "@mui/material";
 
 export default function SimpleAppbar() {
-    const {isLoggedIn} = useAuth();
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" sx = {{display: "flex", justifyContent: "space-between", flexWrap: "nowrap"}}>
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Link to="/"> <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Home
-                    </Typography></Link>
-                    <Link to="/messenger"><Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Messenger
-                    </Typography></Link>
-                    <LoginMenuButton/>
-                    <LogoutMenuButton/>
+                    <Container sx = {{display: "inline-block"}}>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{ mr: 2 }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Link to="/"> <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginRight: 5 }}>
+                            Home
+                        </Typography></Link>
+                        <Link to="/messenger"><Typography variant="h6" component="div" sx={{ flexGrow: 1, marginRight: 5 }}>
+                            Messenger
+                        </Typography></Link>
+
+                    </Container>
+                    <Container sx = {{display: "inline-block"}}>
+                        <LoginMenuButton/>
+                        <LogoutMenuButton/>
+                    </Container>
+
                 </Toolbar>
             </AppBar>
         </Box>
