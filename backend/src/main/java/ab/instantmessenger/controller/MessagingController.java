@@ -8,9 +8,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 public class MessagingController {
 
@@ -21,9 +19,17 @@ public class MessagingController {
 
     @MessageMapping("/conversations/{conversationId}/messages")
     public void sendMessage(MessageWriteDto messageDto, @DestinationVariable long conversationId) {
-        String destination = "/topic/conversations/"+ conversationId+"/messages";
+        String destination = "/topic/conversations/" + conversationId + "/messages";
+
         Message message = conversationService.addMessage(messageDto, conversationId);
         simpMessagingTemplate.convertAndSend(destination, message);
+    }
+    @MessageMapping("/conversations/{conversationId}/messages/{messageId}/delete")
+    public void deleteMessage(@DestinationVariable long messageId, @DestinationVariable long conversationId){
+        String destination = "/topic/conversations/"+ conversationId+"/messages";
+
+        Message deleted = conversationService.markDeletedMessage(messageId);
+        simpMessagingTemplate.convertAndSend(destination, deleted);
     }
 
 }

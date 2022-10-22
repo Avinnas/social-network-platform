@@ -2,6 +2,7 @@ package ab.instantmessenger.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class User {
 
     String email;
 
+    @JsonIgnore
     String password;
 
     @JsonBackReference(value = "user-conversations")

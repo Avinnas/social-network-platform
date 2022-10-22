@@ -52,4 +52,18 @@ public class ConversationService {
     public List<Message> getMessages(long conversationId) {
         return messageRepository.findAllByConversation_IdFetchUsers(conversationId);
     }
+
+    public void updateMessage(Message message){
+
+        Message m = messageRepository.findById(message.getMessageId()).orElseThrow();
+
+        return;
+    }
+
+    public Message  markDeletedMessage(long messageId){
+        Message message = messageRepository.findById(messageId).orElseThrow();
+        message.setDeleted(true);
+
+        return message;
+    }
 }
