@@ -8,9 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class AuthUtils {
 
-  @Autowired static UserRepository userRepository;
+public class AuthUtils {
 
   public static User getCurrentUser() {
     return ((UserDetailsImpl) getCurrentUserDetails()).getUser();
