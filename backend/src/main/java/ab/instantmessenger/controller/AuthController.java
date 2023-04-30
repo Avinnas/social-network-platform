@@ -17,39 +17,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-    @CrossOrigin(origins = "*", maxAge = 3600)
-    @RestController
-    @RequestMapping("/api/v1/auth")
-    public class AuthController {
-        @Autowired
-        AuthenticationManager authenticationManager;
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/api/v1/auth")
+public class AuthController {
+  @Autowired AuthenticationManager authenticationManager;
 
-        @Autowired
-        UserRepository userRepository;
+  @Autowired UserRepository userRepository;
 
+  @Autowired PasswordEncoder encoder;
 
-        @Autowired
-        PasswordEncoder encoder;
+  @Autowired JwtUtils jwtUtils;
 
-        @Autowired
-        JwtUtils jwtUtils;
+  @PostMapping("/signin")
+  public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 
-        @PostMapping("/signin")
-        public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
+    UsernamePasswordAuthenticationToken token =
+        new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+    Authentication authentication = authenticationManager.authenticate(token);
 
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(item -> item.getAuthority())
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.ok(new JwtResponse(jwt,
-                    userDetails.getUsername(),
-                    userDetails.getPassword()));
-        }
-    }
+    return ResponseEntity.ok(
+        new JwtResponse(jwt, userDetails.getUsername(), userDetails.getPassword()));
+  }
+}

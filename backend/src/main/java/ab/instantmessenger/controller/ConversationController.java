@@ -13,23 +13,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/conversations")
 public class ConversationController {
 
-    @Autowired
-    ConversationService conversationService;
+  @Autowired ConversationService conversationService;
 
-    @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(conversationService.getAllUserConversations());
-    }
+  @GetMapping
+  public ResponseEntity<?> getAll() {
+    return ResponseEntity.ok(conversationService.getAllUserConversations());
+  }
 
-    @PostMapping("/{id}/messages")
-    public ResponseEntity<?> addMessage(
-            @RequestBody MessageWriteDto message, @PathVariable long id) {
+  @PostMapping("/{id}/messages")
+  public ResponseEntity<?> addMessage(@RequestBody MessageWriteDto message, @PathVariable long id) {
 
-        return ResponseEntity.ok(conversationService.addMessage(message, id));
-    }
+    return ResponseEntity.ok(conversationService.addMessage(message, id));
+  }
 
-    @GetMapping("/{id}/messages")
-    public ResponseEntity<?> getMessages(@AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {
-        return ResponseEntity.ok(conversationService.getMessages(id));
-    }
+  @GetMapping("/{id}/messages")
+  public ResponseEntity<?> getMessages(
+      @AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {
+    return ResponseEntity.ok(conversationService.getMessages(id));
+  }
 }

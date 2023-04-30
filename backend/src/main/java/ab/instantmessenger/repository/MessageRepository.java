@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    @Query("select m from Message m join fetch m.user where m.conversation.conversationId=:conversationId")
-    List<Message> findAllByConversation_IdFetchUsers(long conversationId);
+  @Query(
+      "select m from Message m join fetch m.user where m.conversation.conversationId=:conversationId")
+  List<Message> findAllByConversation_IdFetchUsers(long conversationId);
 }

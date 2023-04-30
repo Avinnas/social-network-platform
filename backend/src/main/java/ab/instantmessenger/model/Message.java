@@ -14,30 +14,29 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 public class Message {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long messageId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  long messageId;
 
-    String content;
+  String content;
 
-    LocalDateTime date;
+  LocalDateTime date;
 
-    @ColumnDefault("false")
-    boolean deleted;
+  @ColumnDefault("false")
+  boolean deleted;
 
-    @ColumnDefault("false")
-    boolean edited;
+  @ColumnDefault("false")
+  boolean edited;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "conversation_id")
-    @JsonBackReference
-    Conversation conversation;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "conversation_id")
+  @JsonBackReference
+  Conversation conversation;
 }

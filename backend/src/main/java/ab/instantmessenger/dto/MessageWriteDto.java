@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageWriteDto {
-    String content;
-    LocalDateTime date;
+  String content;
+  LocalDateTime date;
 }

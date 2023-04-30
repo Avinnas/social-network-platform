@@ -15,35 +15,35 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
-    @Autowired
-    private JwtUtils jwtUtils;
+  @Autowired private JwtUtils jwtUtils;
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+  @Autowired private UserDetailsServiceImpl userDetailsService;
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+  private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
-            String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
-                UsernamePasswordAuthenticationToken authentication = jwtUtils.createUsernamePasswordAuthenticationToken(jwt);
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    try {
+      String jwt = parseJwt(request);
+      if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+        UsernamePasswordAuthenticationToken authentication =
+            jwtUtils.createUsernamePasswordAuthenticationToken(jwt);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
-        }
-
-        filterChain.doFilter(request, response);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+      }
+    } catch (Exception e) {
+      logger.error("Cannot set user authentication: {}", e);
     }
 
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
+    filterChain.doFilter(request, response);
+  }
 
-        return jwtUtils.trimToken(headerAuth);
-    }
+  private String parseJwt(HttpServletRequest request) {
+    String headerAuth = request.getHeader("Authorization");
+
+    return jwtUtils.trimToken(headerAuth);
+  }
 }

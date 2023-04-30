@@ -18,52 +18,52 @@ import java.util.stream.Collectors;
 @Service
 public class ConversationService {
 
-    @Autowired
-    ConversationRepository conversationRepository;
+  @Autowired ConversationRepository conversationRepository;
 
-    @Autowired
-    UserRepository userRepository;
+  @Autowired UserRepository userRepository;
 
-    @Autowired
-    MessageRepository messageRepository;
+  @Autowired MessageRepository messageRepository;
 
-    @Autowired
-    MessageWriteDtoMapper messageWriteDtoMapper;
+  @Autowired MessageWriteDtoMapper messageWriteDtoMapper;
 
-    public List<ConversationReadDto> getAllUserConversations() {
-        List<Conversation> conversations = conversationRepository
-                .findConversationsByUsers_Username(AuthUtils.getCurrentUserDetails().getUsername());
-        return conversations.stream().map(conversation ->
+  public List<ConversationReadDto> getAllUserConversations() {
+    List<Conversation> conversations =
+        conversationRepository.findConversationsByUsers_Username(
+            AuthUtils.getCurrentUserDetails().getUsername());
+    return conversations.stream()
+        .map(
+            conversation ->
                 new ConversationReadDto(
-                        conversation.getConversationId(),
-                        "conversation-" + conversation.getConversationId())).collect(Collectors.toList());
-    }
+                    conversation.getConversationId(),
+                    "conversation-" + conversation.getConversationId()))
+        .collect(Collectors.toList());
+  }
 
-    public Message addMessage(MessageWriteDto messageDto, long conversationId) {
+  public Message addMessage(MessageWriteDto messageDto, long conversationId) {
 
-        Message message = messageWriteDtoMapper.toMessage(messageDto);
+    Message message = messageWriteDtoMapper.toMessage(messageDto);
 
-        message.setConversation(conversationRepository.getReferenceById(conversationId));
-        message.setUser(AuthUtils.getCurrentUser());
+    message.setConversation(conversationRepository.getReferenceById(conversationId));
+    message.setUser(AuthUtils.getCurrentUser());
 
-        return messageRepository.save(message);
-    }
+    return messageRepository.save(message);
+  }
 
-    public List<Message> getMessages(long conversationId) {
-        return messageRepository.findAllByConversation_IdFetchUsers(conversationId);
-    }
+  public List<Message> getMessages(long conversationId) {
+    return messageRepository.findAllByConversation_IdFetchUsers(conversationId);
+  }
 
-    public void updateMessage(Message message){
+  public void updateMessage(Message message) {
 
-        Message m = messageRepository.findById(message.getMessageId()).orElseThrow();
+    Message m = messageRepository.findById(message.getMessageId()).orElseThrow();
 
-        return;
-    }
+    return;
+  }
 
-    public Message  markDeletedMessage(long messageId){
-        Message message = messageRepository.findById(messageId).orElseThrow();
-        message.setDeleted(true);
+  public Message markDeletedMessage(long messageId) {
+    Message message = messageRepository.findById(messageId).orElseThrow();
+    message.setDeleted(true);
 
-        return message;
-    }
+    return message;
+  }
 }

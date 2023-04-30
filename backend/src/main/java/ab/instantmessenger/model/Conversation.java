@@ -13,25 +13,23 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 public class Conversation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long conversationId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  long conversationId;
 
-    String title;
+  String title;
 
-    @OneToMany(mappedBy = "conversation")
-    @JsonBackReference
-    List<Message> messages;
+  @OneToMany(mappedBy = "conversation")
+  @JsonBackReference
+  List<Message> messages;
 
-    @ManyToMany
-    @JoinTable(
-            name = "conversations_users",
-            joinColumns = { @JoinColumn(name = "conversation_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id") }
-    )
-    List<User> users;
+  @ManyToMany
+  @JoinTable(
+      name = "conversations_users",
+      joinColumns = {@JoinColumn(name = "conversation_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")})
+  List<User> users;
 }

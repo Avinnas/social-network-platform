@@ -10,16 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class AuthUtils {
 
-    @Autowired
-    static UserRepository userRepository;
+  @Autowired static UserRepository userRepository;
 
-    public static User getCurrentUser(){
-        return ((UserDetailsImpl)getCurrentUserDetails()).getUser();
-    }
+  public static User getCurrentUser() {
+    return ((UserDetailsImpl) getCurrentUserDetails()).getUser();
+  }
 
-    public static UserDetails getCurrentUserDetails(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetails) authentication.getPrincipal();
-    }
-
+  public static UserDetails getCurrentUserDetails() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return (UserDetails) authentication.getPrincipal();
+  }
 }

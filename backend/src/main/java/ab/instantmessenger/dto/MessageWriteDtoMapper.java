@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MessageWriteDtoMapper {
-    public Message toMessage(MessageWriteDto messageWriteDto){
-        Message message = new Message();
-        message.setContent(messageWriteDto.getContent());
-        message.setDate(messageWriteDto.getDate());
-        return message;
-    }
+  public Message toMessage(MessageWriteDto messageWriteDto) {
+    Message message = new Message();
+    message.setContent(messageWriteDto.getContent());
+    message.setDate(messageWriteDto.getDate());
+    return message;
+  }
 }

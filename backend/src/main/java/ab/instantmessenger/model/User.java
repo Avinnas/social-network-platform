@@ -1,6 +1,5 @@
 package ab.instantmessenger.model;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -15,25 +14,23 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  long userId;
 
-    String username;
+  String username;
 
-    String email;
+  String email;
 
-    @JsonIgnore
-    String password;
+  @JsonIgnore String password;
 
-    @JsonBackReference(value = "user-conversations")
-    @ManyToMany(mappedBy = "users")
-    List<Conversation> conversations;
+  @JsonBackReference(value = "user-conversations")
+  @ManyToMany(mappedBy = "users")
+  List<Conversation> conversations;
 
-    @JsonBackReference(value = "user-messages")
-    @OneToMany(mappedBy = "user")
-    List<Message> messages;
+  @JsonBackReference(value = "user-messages")
+  @OneToMany(mappedBy = "user")
+  List<Message> messages;
 }

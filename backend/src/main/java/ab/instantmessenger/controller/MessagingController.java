@@ -12,24 +12,23 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class MessagingController {
 
-    @Autowired
-    private ConversationService conversationService;
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+  @Autowired private ConversationService conversationService;
+  @Autowired private SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/conversations/{conversationId}/messages")
-    public void sendMessage(MessageWriteDto messageDto, @DestinationVariable long conversationId) {
-        String destination = "/topic/conversations/" + conversationId + "/messages";
+  @MessageMapping("/conversations/{conversationId}/messages")
+  public void sendMessage(MessageWriteDto messageDto, @DestinationVariable long conversationId) {
+    String destination = "/topic/conversations/" + conversationId + "/messages";
 
-        Message message = conversationService.addMessage(messageDto, conversationId);
-        simpMessagingTemplate.convertAndSend(destination, message);
-    }
-    @MessageMapping("/conversations/{conversationId}/messages/{messageId}/delete")
-    public void deleteMessage(@DestinationVariable long messageId, @DestinationVariable long conversationId){
-        String destination = "/topic/conversations/"+ conversationId+"/messages";
+    Message message = conversationService.addMessage(messageDto, conversationId);
+    simpMessagingTemplate.convertAndSend(destination, message);
+  }
 
-        Message deleted = conversationService.markDeletedMessage(messageId);
-        simpMessagingTemplate.convertAndSend(destination, deleted);
-    }
+  @MessageMapping("/conversations/{conversationId}/messages/{messageId}/delete")
+  public void deleteMessage(
+      @DestinationVariable long messageId, @DestinationVariable long conversationId) {
+    String destination = "/topic/conversations/" + conversationId + "/messages";
 
+    Message deleted = conversationService.markDeletedMessage(messageId);
+    simpMessagingTemplate.convertAndSend(destination, deleted);
+  }
 }

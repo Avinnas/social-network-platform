@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
 
-    List<Conversation> findConversationsByUsers_Username(String username);
+  List<Conversation> findConversationsByUsers_Username(String username);
 }

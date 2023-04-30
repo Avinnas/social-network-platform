@@ -14,34 +14,32 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+  private static final String AUTHORIZATION_HEADER = "Authorization";
 
-    @Autowired
-    JwtUtils jwtUtils;
+  @Autowired JwtUtils jwtUtils;
 
-    @Autowired
-    UserDetailsService userDetailsService;
+  @Autowired UserDetailsService userDetailsService;
 
+  @Override
+  public Message<?> preSend(final Message<?> message, final MessageChannel channel) {
+    final StompHeaderAccessor accessor =
+        MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-    @Override
-    public Message<?> preSend(final Message<?> message, final MessageChannel channel)  {
-        final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+    if (StompCommand.CONNECT == accessor.getCommand()) {
+      final String token = parseToken(accessor);
 
-        if (StompCommand.CONNECT == accessor.getCommand()) {
-            final String token = parseToken(accessor);
-
-            if (token != null && jwtUtils.validateJwtToken(token)) {
-                UsernamePasswordAuthenticationToken authentication = jwtUtils.createUsernamePasswordAuthenticationToken(token);
-
-                accessor.setUser(authentication);
-            }
-        }
-        return message;
+      if (token != null && jwtUtils.validateJwtToken(token)) {
+        UsernamePasswordAuthenticationToken authentication =
+            jwtUtils.createUsernamePasswordAuthenticationToken(token);
+        accessor.setUser(authentication);
+      }
     }
+    return message;
+  }
 
-    public String parseToken(StompHeaderAccessor accessor){
-        String headerAuth = accessor.getFirstNativeHeader(AUTHORIZATION_HEADER);
+  public String parseToken(StompHeaderAccessor accessor) {
+    String headerAuth = accessor.getFirstNativeHeader(AUTHORIZATION_HEADER);
 
-        return jwtUtils.trimToken(headerAuth);
-    }
+    return jwtUtils.trimToken(headerAuth);
+  }
 }
