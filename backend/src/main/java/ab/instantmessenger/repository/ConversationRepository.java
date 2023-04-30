@@ -12,5 +12,5 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
 
   @Query("select distinct c from Conversation c inner join fetch c.users u where c.conversationId in " +
           "(select distinct c.conversationId from Conversation c inner join c.users u where u.username=:username)")
-  List<Conversation> findConversationsByUsers_UsernameFetchUsers(String username);
+  List<Conversation> findUserConversationsFetchUsers(String username);
 }

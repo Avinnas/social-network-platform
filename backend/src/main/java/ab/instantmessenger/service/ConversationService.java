@@ -26,7 +26,7 @@ public class ConversationService {
 
   public List<ConversationReadDto> getAllUserConversations() {
     List<Conversation> conversations =
-        conversationRepository.findConversationsByUsers_UsernameFetchUsers(
+        conversationRepository.findUserConversationsFetchUsers(
             AuthUtils.getCurrentUserDetails().getUsername());
     return conversations.stream().map(conversationReadDtoMapper::map).collect(Collectors.toList());
   }
