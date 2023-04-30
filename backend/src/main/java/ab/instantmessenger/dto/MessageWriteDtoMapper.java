@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 public class MessageWriteDtoMapper {
   public Message toMessage(MessageWriteDto messageWriteDto) {
     Message message = new Message();
-    message.setContent(messageWriteDto.getContent());
-    message.setDate(messageWriteDto.getDate());
+    message.setContent(messageWriteDto.content());
+    message.setDate(messageWriteDto.date());
     return message;
   }
 }

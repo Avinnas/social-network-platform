@@ -1,42 +1,34 @@
 package ab.instantmessenger.service;
 
 import ab.instantmessenger.dto.ConversationReadDto;
+import ab.instantmessenger.dto.ConversationReadDtoMapper;
 import ab.instantmessenger.dto.MessageWriteDto;
 import ab.instantmessenger.dto.MessageWriteDtoMapper;
 import ab.instantmessenger.model.Conversation;
 import ab.instantmessenger.model.Message;
 import ab.instantmessenger.repository.ConversationRepository;
 import ab.instantmessenger.repository.MessageRepository;
-import ab.instantmessenger.repository.UserRepository;
 import ab.instantmessenger.utils.AuthUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ConversationService {
 
-  @Autowired ConversationRepository conversationRepository;
-
-  @Autowired UserRepository userRepository;
-
-  @Autowired MessageRepository messageRepository;
-
-  @Autowired MessageWriteDtoMapper messageWriteDtoMapper;
+  private final ConversationRepository conversationRepository;
+  private final MessageRepository messageRepository;
+  private final MessageWriteDtoMapper messageWriteDtoMapper;
+  private final ConversationReadDtoMapper conversationReadDtoMapper;
 
   public List<ConversationReadDto> getAllUserConversations() {
     List<Conversation> conversations =
         conversationRepository.findConversationsByUsers_Username(
             AuthUtils.getCurrentUserDetails().getUsername());
-    return conversations.stream()
-        .map(
-            conversation ->
-                new ConversationReadDto(
-                    conversation.getConversationId(),
-                    "conversation-" + conversation.getConversationId()))
-        .collect(Collectors.toList());
+    return conversations.stream().map(conversationReadDtoMapper::map).collect(Collectors.toList());
   }
 
   public Message addMessage(MessageWriteDto messageDto, long conversationId) {
@@ -51,13 +43,6 @@ public class ConversationService {
 
   public List<Message> getMessages(long conversationId) {
     return messageRepository.findAllByConversation_IdFetchUsers(conversationId);
-  }
-
-  public void updateMessage(Message message) {
-
-    Message m = messageRepository.findById(message.getMessageId()).orElseThrow();
-
-    return;
   }
 
   public Message markDeletedMessage(long messageId) {

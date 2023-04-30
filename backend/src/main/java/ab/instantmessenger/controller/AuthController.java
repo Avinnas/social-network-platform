@@ -14,9 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -33,7 +30,7 @@ public class AuthController {
   public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 
     UsernamePasswordAuthenticationToken token =
-        new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+        new UsernamePasswordAuthenticationToken(loginDto.username(), loginDto.password());
     Authentication authentication = authenticationManager.authenticate(token);
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
