@@ -20,10 +20,13 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   long userId;
 
+  @Column(nullable = false)
   String username;
 
+  @Column(nullable = false)
   String email;
 
+  @Column(nullable = false)
   @JsonIgnore String password;
 
   @JsonBackReference(value = "user-conversations")

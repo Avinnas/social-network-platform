@@ -1,6 +1,7 @@
 package ab.instantmessenger.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,31 +13,35 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Message {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  long messageId;
+  private long messageId;
 
-  String content;
+  @Column(nullable = false, length = 1000)
+  private String content;
 
-  LocalDateTime date;
+  @Column(nullable = false)
+  private LocalDateTime date;
 
   @ColumnDefault("false")
-  boolean deleted;
+  @Column(nullable = false)
+  private boolean deleted;
 
   @ColumnDefault("false")
-  boolean edited;
+  @Column(nullable = false)
+  private boolean edited;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  User user;
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "conversation_id")
+  @JoinColumn(name = "conversation_id", nullable = false)
   @JsonBackReference
-  Conversation conversation;
+  private Conversation conversation;
 }
