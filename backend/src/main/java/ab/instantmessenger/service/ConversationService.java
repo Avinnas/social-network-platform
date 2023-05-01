@@ -13,6 +13,7 @@ import ab.instantmessenger.utils.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,7 @@ public class ConversationService {
 
     message.setConversation(conversationRepository.getReferenceById(conversationId));
     message.setUser(AuthUtils.getCurrentUser());
+    message.setDate(LocalDateTime.now());
 
     return messageRepository.save(message);
   }
