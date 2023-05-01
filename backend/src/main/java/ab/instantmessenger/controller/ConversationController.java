@@ -26,6 +26,11 @@ public class ConversationController {
     return ResponseEntity.ok(conversationService.addMessage(message, id));
   }
 
+  @PostMapping
+  public ResponseEntity<?> getConversationWithUser(@RequestParam String otherUsername){
+    return ResponseEntity.ok(conversationService.getConversationWithUser(otherUsername));
+  }
+
   @GetMapping("/{id}/messages")
   public ResponseEntity<?> getMessages(
       @AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {

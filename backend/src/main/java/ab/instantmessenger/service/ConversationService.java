@@ -1,9 +1,7 @@
 package ab.instantmessenger.service;
 
-import ab.instantmessenger.dto.ConversationReadDto;
-import ab.instantmessenger.dto.ConversationReadDtoMapper;
-import ab.instantmessenger.dto.MessageWriteDto;
-import ab.instantmessenger.dto.MessageWriteDtoMapper;
+import ab.instantmessenger.dto.*;
+import ab.instantmessenger.exception.ResourceNotFoundException;
 import ab.instantmessenger.model.Conversation;
 import ab.instantmessenger.model.Message;
 import ab.instantmessenger.repository.ConversationRepository;
@@ -50,5 +48,15 @@ public class ConversationService {
     message.setDeleted(true);
 
     return message;
+  }
+
+  public ConversationPageDto getConversationWithUser(String otherUsername) {
+    String currentUsername = AuthUtils.getCurrentUser().getUsername();
+    Conversation conversation =
+        conversationRepository
+            .findConversationByUsersFetchMessages(currentUsername, otherUsername)
+            .orElseThrow(() -> new ResourceNotFoundException(String.format("Conversation of users %s and %s not found", currentUsername, otherUsername)));
+
+    return new ConversationPageDto(conversation.getConversationId(), conversation.getMessages());
   }
 }
