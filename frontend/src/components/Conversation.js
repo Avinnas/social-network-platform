@@ -10,6 +10,7 @@ import SockJsClient from "react-stomp";
 export default function Conversation(props) {
 
     const API_URL_GET_MESSAGES = process.env.REACT_APP_API_URL + "/conversations/" + props.id + "/messages"
+    const API_URL_DELETE_MESSAGE = "/app/conversations/" + props.id + "/messages";
 
     const [messages, setMessages] = useState([]);
     const [clientRef, setClientRef] = useState(null)
@@ -24,12 +25,7 @@ export default function Conversation(props) {
             });
     }, []);
 
-    const onMessageReceived = (messageReceived) => {
-        if (getCurrentUser().username !== messageReceived.user.username) {
-            setMessages([...messages, messageReceived])
-            return;
-        }
-        // Replace existing message
+    function updateMessage(messageReceived) {
         const newMessagesArray = messages.map(message => {
             if (message.messageId === messageReceived.messageId) {
                 return messageReceived;
@@ -37,6 +33,30 @@ export default function Conversation(props) {
             return message;
         })
         setMessages(newMessagesArray);
+    }
+
+    const onMessageReceived = (messageReceived) => {
+        // if (getCurrentUser().username !== messageReceived.user.username) {
+        //     setMessages([...messages, messageReceived])
+        //     return;
+        // }
+        // Replace existing message
+        updateMessage(messageReceived);
+    }
+
+    const onMessageDeleted = (id) => {
+        console.log(id)
+        const newMessagesArray = messages.map(message => {
+            if (message.messageId === id) {
+                message.deleted = true;
+                console.log(message)
+            }
+            return message;
+        })
+        setMessages(newMessagesArray);
+        console.log(newMessagesArray);
+
+        clientRef.sendMessage(API_URL_DELETE_MESSAGE + "/" + id + "/delete", {"Authorization": "Bearer " + getCurrentUser().accessToken})
     }
 
 
@@ -57,7 +77,8 @@ export default function Conversation(props) {
                               setClientRef(client)
                           }}/>
             <h2>{props.title}</h2>
-                {messages.map((message, index) => <Message key={"message" + index}{...message}/>)}
+            {messages.map((message, index) => <Message onDeleted={onMessageDeleted}
+                                                       key={"message" + index}{...message}/>)}
 
             <NewMessageForm conversationId={props.id} clientRef={clientRef} messages={messages}
                             setMessages={setMessages}/>
