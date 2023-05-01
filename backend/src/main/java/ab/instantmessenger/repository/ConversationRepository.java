@@ -19,4 +19,8 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
           " where u.username=:username1 and c.conversationId = " +
           "(select distinct c.conversationId from Conversation c join c.users u where u.username =:username2)")
   Optional<Conversation> findConversationByUsersFetchMessages(String username1, String username2);
+
+  @Query("select distinct c from Conversation c join c.users u where u.userId=:firstId and c.conversationId = " +
+          "(select distinct c.conversationId from Conversation c join c.users u where u.userId=:secondId)")
+  Optional<Conversation> findConversationByUsersIds (long firstId, long secondId);
 }
