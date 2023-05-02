@@ -195,7 +195,7 @@ function ResponsiveAppBar() {
                         ))}
                     </Box>
 
-                    {isLoggedIn ? renderUserMenu() : <LoginMenuButton/>}
+                    {isLoggedIn ? renderUserMenu() : <><LoginMenuButton/><Link to="/register"> <Button color="inherit">Sign up</Button></Link></>}
 
 
                 </Toolbar>

@@ -23,18 +23,23 @@ export default function NewConversation(props) {
                         otherUsername: e.target.username.value
                     }
                 })
-                    .then((response) =>
-                        console.log(response.data))
-                    .catch((err) => {
-                        if (err.response.status === 404) {
-                            axios.post(API_CONVERSATION_ENDPOINT, {otherUsername: e.target.username.value})
-                                .then((response) => {
+                    .then((response) => {
+                            props.setCurrentConversation(response.data);
 
-                                    props.setCurrentConversation(response.data);
-                                    props.setConversations([... props.conversations, response.data]);
-                                })
+                            if (props.conversations.filter(conv => conv.conversationId === response.data.conversationId).length === 0) {
+                                props.setConversations([...props.conversations, response.data]);
+                            }
                         }
-                    })
+                    ).catch((err) => {
+                    if (err.response.status === 404) {
+                        axios.post(API_CONVERSATION_ENDPOINT, {otherUsername: e.target.username.value})
+                            .then((response) => {
+
+                                props.setCurrentConversation(response.data);
+                                props.setConversations([...props.conversations, response.data]);
+                            })
+                    }
+                })
 
             })
             .catch((err) => {
