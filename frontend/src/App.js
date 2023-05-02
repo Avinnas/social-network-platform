@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import {Container} from "@mui/material";
+import Register from "./components/Register";
 
 
 function App() {
@@ -30,6 +31,8 @@ function App() {
                       </RequireAuth>}>
                   </Route>
                   <Route path="/login" element={<Login/>}>
+                  </Route>
+                  <Route path="/register" element={<Register/>}>
                   </Route>
               </Routes>
 

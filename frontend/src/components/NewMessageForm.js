@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import {useState} from "react";
 import getCurrentUser from "../utils/currentUser";
+import Box from "@mui/material/Box";
 
 
 export default function NewMessageForm(props) {
@@ -18,7 +19,7 @@ export default function NewMessageForm(props) {
             "content": newMessageContent,
         }
         console.log(props.clientRef)
-        props.clientRef.sendMessage(API_URL_SEND_MESSAGE,JSON.stringify(message), {"Authorization": "Bearer " + getCurrentUser().accessToken})
+        props.clientRef.sendMessage(API_URL_SEND_MESSAGE,JSON.stringify(message))
         message['user']= {
             "username": getCurrentUser().username
         };
@@ -27,9 +28,10 @@ export default function NewMessageForm(props) {
     }
 
     return (
-        <div>
+        <Box mx = {1}>
             <form className={'message-form'} onSubmit={handleSubmit}>
                 <TextField
+                    className={'message-text-field'}
                     fullwidth={true}
                     size="small"
                     id="filled-basic"
@@ -37,11 +39,14 @@ export default function NewMessageForm(props) {
                     placeholder="message"
                     onChange={(e) => setNewMessageContent(e.target.value)}
                 />
-                <Button type="submit" variant="contained" endIcon={<SendIcon/>}>
-                    Send
-                </Button>
+                <Box mx = {1}>
+                    <Button type="submit" variant="contained" endIcon={<SendIcon/>}>
+                        Send
+                    </Button>
+                </Box>
+
             </form>
-        </div>
+        </Box>
     )
 }
 

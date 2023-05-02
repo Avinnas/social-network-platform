@@ -15,8 +15,10 @@
 }
 
 .message-form {
-    float: right;
+    justify-content: flex-end;
+    margin: 10px;
 }
+
 
 .username-label {
     width: fit-content;
@@ -27,10 +29,15 @@
 .flex-container{
     display: flex;
     flex-basis: 0;
+    margin: 5px;
 }
 .changed-axis.right{
     flex-flow: column;
     align-items: end;
+}
+.changed-axis.left{
+    flex-flow: column;
+    align-items: start;
 }
 
 
