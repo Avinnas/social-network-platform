@@ -26,21 +26,21 @@ export default function Conversation(props) {
     }, []);
 
     function updateMessage(messageReceived) {
+        let replaced = false;
         const newMessagesArray = messages.map(message => {
             if (message.messageId === messageReceived.messageId) {
+                replaced = true;
                 return messageReceived;
             }
             return message;
         })
-        setMessages(newMessagesArray);
+        if(replaced === false){
+            newMessagesArray.push(messageReceived)
+        }
+        setMessages([...newMessagesArray]);
     }
 
     const onMessageReceived = (messageReceived) => {
-        // if (getCurrentUser().username !== messageReceived.user.username) {
-        //     setMessages([...messages, messageReceived])
-        //     return;
-        // }
-        // Replace existing message
         updateMessage(messageReceived);
     }
 
@@ -56,7 +56,7 @@ export default function Conversation(props) {
         // setMessages(newMessagesArray);
         // console.log(newMessagesArray);
 
-        clientRef.sendMessage(API_URL_DELETE_MESSAGE + "/" + id + "/delete", {"Authorization": "Bearer " + getCurrentUser().accessToken})
+        clientRef.sendMessage(API_URL_DELETE_MESSAGE + "/" + id + "/delete")
     }
 
 

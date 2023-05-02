@@ -9,7 +9,9 @@
 }
 
 .deleted {
-    background-color: black;
+    background-color: white;
+    color: gray;
+    border: 1px solid black;
 }
 
 .message-form {

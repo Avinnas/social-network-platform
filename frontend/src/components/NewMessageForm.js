@@ -22,9 +22,6 @@ export default function NewMessageForm(props) {
         message['user']= {
             "username": getCurrentUser().username
         };
-        props.setMessages([...props.messages, message])
-
-        console.log(message)
 
         setNewMessageContent("");
     }
