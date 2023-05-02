@@ -3,6 +3,7 @@ import Conversation from "./Conversation";
 import './Messenger.css';
 import axios from "axios";
 import Button from "@mui/material/Button";
+import NewConversation from "./NewConversation";
 
 export default function Messenger() {
     const API_URL_GET_CONVERSATIONS = process.env.REACT_APP_API_URL + "/conversations";
@@ -33,6 +34,9 @@ export default function Messenger() {
         <>
             <div id={'messenger-container'}>
                 <div id={'conversation-tabs-container'} className={'inline-div'}>
+                    <NewConversation conversations={conversations}
+                                       setCurrentConversation={setCurrentConversation}
+                                       setConversations={setConversations}></NewConversation>
                     {conversations.map(
                         (conversation, index) =>
                             <Button variant="contained"

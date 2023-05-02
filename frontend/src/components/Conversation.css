@@ -19,6 +19,10 @@
     margin: 10px;
 }
 
+#new-conversation-container {
+    border: 1px solid;
+    padding: 5px;
+}
 
 .username-label {
     width: fit-content;
