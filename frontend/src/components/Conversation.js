@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import './Conversation.css'
 import NewMessageForm from "./NewMessageForm";
 import axios from "axios";

@@ -9,7 +9,4 @@ public class AuthenticationException extends RuntimeException {
         super(message);
     }
 
-    public AuthenticationException(Throwable cause) {
-        super(cause);
-    }
 }

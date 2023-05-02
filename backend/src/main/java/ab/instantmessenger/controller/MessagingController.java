@@ -13,8 +13,13 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class MessagingController {
 
-  @Autowired private ConversationService conversationService;
-  @Autowired private SimpMessagingTemplate simpMessagingTemplate;
+  private final ConversationService conversationService;
+  private final SimpMessagingTemplate simpMessagingTemplate;
+
+  public MessagingController(ConversationService conversationService, SimpMessagingTemplate simpMessagingTemplate) {
+    this.conversationService = conversationService;
+    this.simpMessagingTemplate = simpMessagingTemplate;
+  }
 
   @MessageMapping("/conversations/{conversationId}/messages")
   public void sendMessage(MessageWriteDto messageDto, @DestinationVariable long conversationId) {

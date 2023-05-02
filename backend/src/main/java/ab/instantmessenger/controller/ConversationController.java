@@ -34,15 +34,17 @@ public class ConversationController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<?> getConversationWithUser(@RequestParam String otherUsername){
+  public ResponseEntity<?> getConversationWithUser(@RequestParam String otherUsername) {
     return ResponseEntity.ok(conversationService.getConversationWithUser(otherUsername));
   }
 
   @PostMapping
-  public ResponseEntity<?> addConversationWithUser(@RequestBody OtherUserDto otherUser){
-    ConversationReadDto conversationReadDto = conversationService.addConversationWithUser(otherUser);
+  public ResponseEntity<?> addConversationWithUser(@RequestBody OtherUserDto otherUser) {
+    ConversationReadDto conversationReadDto =
+        conversationService.addConversationWithUser(otherUser);
     long conversationId = conversationReadDto.conversationId();
-    return ResponseEntity.created(URI.create(PATH + "/" + conversationId)).body(conversationReadDto);
+    return ResponseEntity.created(URI.create(PATH + "/" + conversationId))
+        .body(conversationReadDto);
   }
 
   @GetMapping("/{id}/messages")
