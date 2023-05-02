@@ -16,9 +16,11 @@ import org.springframework.stereotype.Component;
 public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
   private static final String AUTHORIZATION_HEADER = "Authorization";
 
-  @Autowired JwtUtils jwtUtils;
+  private final JwtUtils jwtUtils;
 
-  @Autowired UserDetailsService userDetailsService;
+  public AuthChannelInterceptorAdapter(JwtUtils jwtUtils) {
+    this.jwtUtils = jwtUtils;
+  }
 
   @Override
   public Message<?> preSend(final Message<?> message, final MessageChannel channel) {
