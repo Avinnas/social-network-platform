@@ -83,7 +83,7 @@ public class ConversationService {
     return new ConversationPageDto(conversation.getConversationId(), conversation.getMessages());
   }
 
-  public long addConversationWithUser(OtherUserDto otherUserDto) {
+  public ConversationReadDto addConversationWithUser(OtherUserDto otherUserDto) {
     User currentUser = AuthUtils.getCurrentUser();
     User otherUser =
         userRepository
@@ -107,6 +107,6 @@ public class ConversationService {
     Conversation conversation =
         Conversation.builder().users(List.of(currentUser, otherUser)).build();
     conversation = conversationRepository.save(conversation);
-    return conversation.getConversationId();
+    return conversationReadDtoMapper.map(conversation);
   }
 }

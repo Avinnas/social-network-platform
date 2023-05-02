@@ -40,8 +40,9 @@ public class ConversationController {
 
   @PostMapping
   public ResponseEntity<?> addConversationWithUser(@RequestBody OtherUserDto otherUser){
-    long conversationId = conversationService.addConversationWithUser(otherUser);
-    return ResponseEntity.created(URI.create(PATH + "/" + conversationId)).build();
+    ConversationReadDto conversationReadDto = conversationService.addConversationWithUser(otherUser);
+    long conversationId = conversationReadDto.conversationId();
+    return ResponseEntity.created(URI.create(PATH + "/" + conversationId)).body(conversationReadDto);
   }
 
   @GetMapping("/{id}/messages")
