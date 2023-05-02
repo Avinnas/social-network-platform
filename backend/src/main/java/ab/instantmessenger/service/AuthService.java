@@ -3,6 +3,7 @@ package ab.instantmessenger.service;
 import ab.instantmessenger.dto.LoginDto;
 import ab.instantmessenger.dto.SignUpDto;
 import ab.instantmessenger.dto.UserResponseDto;
+import ab.instantmessenger.dto.UserResponseDtoMapper;
 import ab.instantmessenger.model.User;
 import ab.instantmessenger.repository.UserRepository;
 import ab.instantmessenger.security.AuthenticationException;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
   private final UserRepository userRepository;
+  private final UserResponseDtoMapper userResponseDtoMapper;
   private final AuthenticationManager authenticationManager;
   private final JwtUtils jwtUtils;
   private final PasswordEncoder passwordEncoder;
@@ -61,6 +63,7 @@ public class AuthService {
             .build();
 
     userRepository.save(user);
-    return new UserResponseDto(user.getUserId(), user.getUsername());
+    return userResponseDtoMapper.map(user);
   }
+
 }

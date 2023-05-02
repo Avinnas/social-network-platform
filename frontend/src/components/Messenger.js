@@ -34,14 +34,16 @@ export default function Messenger() {
             <div id={'messenger-container'}>
                 <div id={'conversation-tabs-container'} className={'inline-div'}>
                     {conversations.map(
-                        (conversation, index) => <Button variant="contained"
-                                                         fullWidth={true}
-                                                         sx={{mt: 1}}
-                                                         key={conversation.conversationId}
-                                                         onClick={() => changeConversation(index)}>{conversation.title}</Button>)}
+                        (conversation, index) =>
+                            <Button variant="contained"
+                                    fullWidth={true}
+                                    sx={{mt: 1}}
+                                    key={conversation.conversationId}
+                                    onClick={() => changeConversation(index)}>{conversation.title}</Button>)}
                 </div>
                 <div id={'conversation-messages-container'} className={'inline-div'}>
-                    {currentConversation && <Conversation key={currentConversation.conversationId} id={currentConversation.conversationId}/>}
+                    {currentConversation && <Conversation key={currentConversation.conversationId}
+                                                          id={currentConversation.conversationId}/>}
                 </div>
             </div>
         </>

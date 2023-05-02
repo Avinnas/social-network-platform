@@ -45,16 +45,16 @@ export default function Conversation(props) {
     }
 
     const onMessageDeleted = (id) => {
-        console.log(id)
-        const newMessagesArray = messages.map(message => {
-            if (message.messageId === id) {
-                message.deleted = true;
-                console.log(message)
-            }
-            return message;
-        })
-        setMessages(newMessagesArray);
-        console.log(newMessagesArray);
+        // console.log(id)
+        // const newMessagesArray = messages.map(message => {
+        //     if (message.messageId === id) {
+        //         message.deleted = true;
+        //         console.log(message)
+        //     }
+        //     return message;
+        // })
+        // setMessages(newMessagesArray);
+        // console.log(newMessagesArray);
 
         clientRef.sendMessage(API_URL_DELETE_MESSAGE + "/" + id + "/delete", {"Authorization": "Bearer " + getCurrentUser().accessToken})
     }

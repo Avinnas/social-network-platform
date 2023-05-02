@@ -1,5 +1,6 @@
 package ab.instantmessenger.controller;
 
+import ab.instantmessenger.dto.MessageReadDto;
 import ab.instantmessenger.dto.MessageWriteDto;
 import ab.instantmessenger.model.Message;
 import ab.instantmessenger.service.ConversationService;
@@ -19,7 +20,7 @@ public class MessagingController {
   public void sendMessage(MessageWriteDto messageDto, @DestinationVariable long conversationId) {
     String destination = "/topic/conversations/" + conversationId + "/messages";
 
-    Message message = conversationService.addMessage(messageDto, conversationId);
+    MessageReadDto message = conversationService.addMessage(messageDto, conversationId);
     simpMessagingTemplate.convertAndSend(destination, message);
   }
 
@@ -28,7 +29,7 @@ public class MessagingController {
       @DestinationVariable long messageId, @DestinationVariable long conversationId) {
     String destination = "/topic/conversations/" + conversationId + "/messages";
 
-    Message deleted = conversationService.markDeletedMessage(messageId);
+    MessageReadDto deleted = conversationService.markDeletedMessage(messageId);
     simpMessagingTemplate.convertAndSend(destination, deleted);
   }
 }

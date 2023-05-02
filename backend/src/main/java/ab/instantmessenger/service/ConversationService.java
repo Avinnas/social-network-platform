@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class ConversationService {
   private final ConversationRepository conversationRepository;
   private final MessageRepository messageRepository;
   private final MessageWriteDtoMapper messageWriteDtoMapper;
+  private final MessageReadDtoMapper messageReadDtoMapper;
   private final ConversationReadDtoMapper conversationReadDtoMapper;
   private final UserRepository userRepository;
 
@@ -34,7 +36,7 @@ public class ConversationService {
     return conversations.stream().map(conversationReadDtoMapper::map).collect(Collectors.toList());
   }
 
-  public Message addMessage(MessageWriteDto messageDto, long conversationId) {
+  public MessageReadDto addMessage(MessageWriteDto messageDto, long conversationId) {
 
     Message message = messageWriteDtoMapper.toMessage(messageDto);
 
@@ -42,14 +44,17 @@ public class ConversationService {
     message.setUser(AuthUtils.getCurrentUser());
     message.setDate(LocalDateTime.now());
 
-    return messageRepository.save(message);
+    return messageReadDtoMapper.map(messageRepository.save(message));
   }
 
-  public List<Message> getMessages(long conversationId) {
-    return messageRepository.findAllByConversation_IdFetchUsers(conversationId);
+  public List<MessageReadDto> getMessages(long conversationId) {
+    return messageRepository.findAllByConversation_IdFetchUsers(conversationId).stream()
+        .map(messageReadDtoMapper::map)
+        .sorted(Comparator.comparing(MessageReadDto::date))
+        .collect(Collectors.toList());
   }
 
-  public Message markDeletedMessage(long messageId) {
+  public MessageReadDto markDeletedMessage(long messageId) {
     Message message =
         messageRepository
             .findById(messageId)
@@ -58,8 +63,9 @@ public class ConversationService {
                     new ResourceNotFoundException(
                         String.format("Message with id %d not found", messageId)));
     message.setDeleted(true);
+    message.setContent("");
 
-    return message;
+    return messageReadDtoMapper.map(messageRepository.save(message));
   }
 
   public ConversationPageDto getConversationWithUser(String otherUsername) {
